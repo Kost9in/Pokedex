@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html ng-app="pokemonApp">
+	<head>
+		<title>Pokedex</title>
+
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link href='https://fonts.googleapis.com/css?family=Ubuntu:400,500&amp;subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+		<link href="./css/font-awesome.min.css" rel="stylesheet" media="screen">
+		<link href="./css/style.css" rel="stylesheet" media="screen">
+		<link href="./css/responsive.css" rel="stylesheet" media="screen">
+
+		<script src="./js/jquery-2.2.1.min.js"></script>
+		<script src="./js/angular.min.js"></script>
+		<script src="./js/controllers.js"></script>
+		<script src="./js/script.js"></script>
+	</head>
+	<body ng-controller="mainController">
+		<div class="wrapper">
+			<header>
+				<h1>Pokedex</h1>
+			</header>
+			<section>
+				<div class="filters">
+					<ul>
+						<li ng-repeat="filter in filters"><a href="" ng-class="{'active':(active_filters.indexOf(filter.name)>-1)}" ng-click="choose_filter(filter.name)">{{filter.name}}</a></li>
+					</ul>
+				</div>
+				<div class="container" ng-show="loaded">
+					<div class="list">
+						<div class="empty" ng-show="!filteredPokemons.length"><p>Pokemons not found.</p></div>
+						<ul ng-show="filteredPokemons.length">
+							<li ng-repeat="pokemon in filteredPokemons = (pokemons | type:active_filters)">
+								<a href="" ng-click="open(pokemon.national_id)">
+									<img ng-src="http://pokeapi.co/media/img/{{pokemon.national_id}}.png" alt="">
+									<p class="name">{{pokemon.name}}</p>
+									<div class="types">
+										<p class="one" ng-repeat="type in pokemon.types">{{type.name}}</p>
+									</div>
+								</a>
+							</li>
+						</ul>
+						<div class="clear"></div>
+						<a href="" ng-click="more()" ng-show="next" class="more">Load more</a>
+					</div>
+					<div class="info" ng-class="{'loading':load_info}" ng-show="filteredPokemons.length">
+						<div class="info_wrapper">
+							<img ng-src="http://pokeapi.co/media/img/{{info.national_id}}.png" alt="">
+							<p class="name">{{info.name}}</p>
+							<div class="parameters">
+								<table>
+									<tr>
+										<td>Types</td>
+										<td><p ng-repeat="type in info.types">{{type.name}}<span ng-show="($index + 1) < info.types.length">, </span></p></td>
+									</tr>
+									<tr>
+										<td>Attack</td>
+										<td>{{info.attack}}</td>
+									</tr>
+									<tr>
+										<td>Defense</td>
+										<td>{{info.defense}}</td>
+									</tr>
+									<tr>
+										<td>HP</td>
+										<td>{{info.hp}}</td>
+									</tr>
+									<tr>
+										<td>SP Attack</td>
+										<td>{{info.sp_atk}}</td>
+									</tr>
+									<tr>
+										<td>SP Defense</td>
+										<td>{{info.sp_def}}</td>
+									</tr>
+									<tr>
+										<td>Speed</td>
+										<td>{{info.speed}}</td>
+									</tr>
+									<tr>
+										<td>Weight</td>
+										<td>{{info.weight}}</td>
+									</tr>
+									<tr>
+										<td>Total moves</td>
+										<td>{{info.moves.length}}</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						<div class="info_loader">
+							<div class="bg"></div>
+							<div class="spinner">
+								<div class="rect1"></div>
+								<div class="rect2"></div>
+								<div class="rect3"></div>
+								<div class="rect4"></div>
+								<div class="rect5"></div>
+							</div>
+						</div>
+						<a href="" ng-click="close()" class="close"><i class="fa fa-times"></i></a>
+					</div>
+				</div>
+			</section>
+			<footer>
+				<p><i class="fa fa-copyright"></i> Pokemons. All rights reserved.</p>
+			</footer>
+		</div>
+		<div class="fade" ng-click="close()"></div>
+		<div class="loader">
+			<div class="bg"></div>
+			<div class="spinner">
+				<div class="rect1"></div>
+				<div class="rect2"></div>
+				<div class="rect3"></div>
+				<div class="rect4"></div>
+				<div class="rect5"></div>
+			</div>
+		</div>
+	</body>
+</html>
