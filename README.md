@@ -8,4 +8,4 @@ you can use [Pokedex here](http://kost9in.github.io/Pokedex/demo/).
 [Kost9In](http://tihov.com.ua/)
 
 ### Contact
-Contact with me - Kost9inbi4@gmail.com or [here](https://vk.com/leenss).
+Contact me - Kost9inbi4@gmail.com or [here](https://vk.com/leenss).
