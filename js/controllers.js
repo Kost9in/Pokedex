@@ -4,7 +4,7 @@ var pokemonApp = angular.module('pokemonApp', []);
 
 pokemonApp.controller('mainController', function ($http, $scope) {
 
-	$scope.domain = 'http://pokeapi.co';
+	$scope.domain = 'https://pokeapi.co';
 	$scope.loaded = $scope.load_info = 0;
 	$scope.next = '/api/v1/pokemon/?limit=12';
 	$scope.filters = [];
