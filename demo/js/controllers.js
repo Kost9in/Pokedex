@@ -5,11 +5,12 @@ var pokemonApp = angular.module('pokemonApp', []);
 pokemonApp.controller('mainController', function ($http, $scope) {
 
 	$scope.domain = 'https://pokeapi.co';
-	$scope.loaded = $scope.load_info = 0;
+	$scope.loaded = $scope.load_info = $scope.active = 0;
 	$scope.next = '/api/v1/pokemon/?limit=12';
 	$scope.filters = [];
-	$scope.pokemons = [];
+	$scope.enabled_filters = [];
 	$scope.active_filters = [];
+	$scope.pokemons = [];
 	$scope.info = {};
 
 	$scope.load_filters = function() {
@@ -25,7 +26,16 @@ pokemonApp.controller('mainController', function ($http, $scope) {
 		if($scope.next) {
 			$http.get($scope.domain + $scope.next).then(function(response) {
 				$scope.next = response.data.meta.next;
-				for(var i = 0; i < response.data.objects.length; i++) $scope.pokemons.push(response.data.objects[i]);
+				for(var i = 0; i < response.data.objects.length; i++) {
+					$scope.pokemons.push(response.data.objects[i]);
+					if(response.data.objects[i].types.length) {
+						for(var j = 0; j < response.data.objects[i].types.length; j++) {
+							let name = response.data.objects[i].types[j].name;
+							name = name.substr(0, 1).toUpperCase() + name.substr(1);
+							if($scope.enabled_filters.indexOf(name)==-1) $scope.enabled_filters.push(name);
+						}
+					}
+				}
 				$scope.loaded = 1;
 				loader(0);
 		    }, function(response) {
@@ -40,16 +50,19 @@ pokemonApp.controller('mainController', function ($http, $scope) {
 	}
 
 	$scope.choose_filter = function(type) {
-		if($scope.active_filters.indexOf(type)==-1) $scope.active_filters.push(type);
-		else $scope.active_filters.splice($scope.active_filters.indexOf(type), 1);
-		open_info(0);
+		if($scope.enabled_filters.indexOf(type)>-1) {
+			if($scope.active_filters.indexOf(type)==-1) $scope.active_filters.push(type);
+			else $scope.active_filters.splice($scope.active_filters.indexOf(type), 1);
+			open_info(0);
+			$scope.active = 0;
+		}
 	}
 
 	$scope.open = function(id) {
 		if(!$scope.load_info) {
 			open_info(1);
 			$scope.load_info = 1;
-			'http://pokeapi.co{{id}}'
+			$scope.active = id;
 			$http.get($scope.domain + '/api/v1/pokemon/' + id + '/').then(function(response) {
 				$scope.info = response.data;
 				$scope.load_info = 0;
@@ -60,7 +73,10 @@ pokemonApp.controller('mainController', function ($http, $scope) {
 	}
 
 	$scope.close = function() {
-		if(!$scope.load_info) open_info(0);
+		if(!$scope.load_info) {
+			open_info(0);
+			$scope.active = 0;
+		}
 	}
 
 	$scope.load_filters();
@@ -72,13 +88,14 @@ pokemonApp.filter('type', function() {
     	var result = [];
         if(types.length) {
 	        for(var i in items) {
-	        	var found = 0;
 	        	for(var j in items[i].types) {
-	        		var name = items[i].types[j].name;
-	        		name = name.substr(0, 1).toUpperCase() + name.substr(1);
-	        		if(types.indexOf(name)>-1) found++;
+	        		let name = items[i].types[j].name;
+		        	name = name.substr(0, 1).toUpperCase() + name.substr(1);
+		        	if(types.indexOf(name)>-1) {
+		        		result.push(items[i]);
+		        		break;
+		        	}
 	        	}
-	        	if(types.length==found) result.push(items[i]);
 	        }
         } else result = items;
         return result;
