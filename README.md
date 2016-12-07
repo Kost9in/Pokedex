@@ -2,7 +2,7 @@
 Pokedex it's encyclopedia of Pokemons.
 
 ### How to use?
-you can use [Pokedex here](http://kost9in.github.io/Pokedex/demo/).
+you can use [Pokedex here](http://tihov.com.ua/demos/pokemons/).
 
 ### Author
 [Kost9In](http://tihov.com.ua/)
