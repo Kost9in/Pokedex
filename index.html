@@ -24,18 +24,16 @@
 			<section>
 				<div class="filters">
 					<ul>
-						<li ng-repeat="filter in filters">
-							<a href="" ng-class="{'active':(active_filters.indexOf(filter.name)>-1),'disabled':(enabled_filters.indexOf(filter.name)==-1)}" ng-click="choose_filter(filter.name)">{{filter.name}}</a>
-						</li>
+						<li ng-repeat="filter in filters"><a href="" ng-class="{'active':(active_filters.indexOf(filter.name)>-1)}" ng-click="choose_filter(filter.name)">{{filter.name}}</a></li>
 					</ul>
 				</div>
 				<div class="container" ng-show="loaded">
 					<div class="list">
 						<div class="empty" ng-show="!filteredPokemons.length"><p>Pokemons not found.</p></div>
 						<ul ng-show="filteredPokemons.length">
-							<li ng-repeat="pokemon in filteredPokemons = (pokemons | type:active_filters)" ng-class="{'active':pokemon.national_id==active}">
+							<li ng-repeat="pokemon in filteredPokemons = (pokemons | type:active_filters)">
 								<a href="" ng-click="open(pokemon.national_id)">
-									<img ng-src="http://pokeapi.co/media/img/{{pokemon.national_id}}.png" alt="">
+									<img ng-src="http://pokeunlock.com/wp-content/uploads/2015/01/{{pokemon.image}}-300x300.png" alt="">
 									<p class="name">{{pokemon.name}}</p>
 									<div class="types">
 										<p class="one" ng-repeat="type in pokemon.types">{{type.name}}</p>
@@ -48,7 +46,7 @@
 					</div>
 					<div class="info" ng-class="{'loading':load_info}" ng-show="filteredPokemons.length">
 						<div class="info_wrapper">
-							<img ng-src="http://pokeapi.co/media/img/{{info.national_id}}.png" alt="">
+							<img ng-src="http://pokeunlock.com/wp-content/uploads/2015/01/{{info.image}}-300x300.png" alt="">
 							<p class="name">{{info.name}}</p>
 							<div class="parameters">
 								<table>
